@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blinker Light Game</title>
+</head>
+
+
+
+
+
+
+<style>
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 900px;
+  background: linear-gradient(0deg, rgb(9, 55, 60) 0%, rgba(27, 41, 46, 0.922) 100%); 
+  border-radius: 30px;
+  border: solid #18F6F3 0.2rem;
+margin: 2rem;
+
+-webkit-box-shadow:0px 0px 98px 0px rgba(45,255,196,0.68);
+-moz-box-shadow: 0px 0px 98px 0px rgba(45,255,196,0.68);
+box-shadow: 0px 0px 98px 0px rgba(45,255,196,0.68);
+
+}
+
+
+
+.container2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+} 
+
+
+.box {
+  background-color: rgb(224, 224, 53);
+  -webkit-box-shadow:0px 0px 98px 12px rgba(255,245,46,0.68);
+-moz-box-shadow: 0px 0px 98px 12px rgba(255,245,46,0.68);
+box-shadow: 0px 0px 98px 12px rgba(255,245,46,0.68);
+padding : 1rem;
+
+
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  border-radius: 50%;
+  display: none;
+  
+}
+
+#toggleButton {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem;
+  width: 9rem;
+  margin-bottom: 3rem;
+}
+
+#infoBox {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 1rem;
+  color: white;
+}
+
+.box2, .box1{
+  padding: 1rem;
+  margin: 2rem;
+  width: 9rem;
+}
+
+h1{
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 3.5rem;
+  letter-spacing: 1rem;
+
+  
+}
+
+
+</style>
+<body>
+    <h1>Blinker Light Game</h1>
+
+    <div class="container">
+        <div class="box"></div>
+        <button id="toggleButton" draggable="true">On / Off</button>
+        <div id="infoBox"></div>
+    </div>
+
+        <div class="container2">
+            <button class="box1" draggable="true">
+                Drag me!
+            </button>
+        
+            <button class="box2" draggable="true">
+                Drop me here!
+            </button>
+        </div>
+
+</body>
+<script>
+
+
+const box1 = document.querySelector(".box1");
+const box2 = document.querySelector(".box2");
+
+box1.addEventListener("dragstart", function(event) {
+  event.dataTransfer.setData("text/plain", "new text");
+});
+
+box2.addEventListener("dragover", function(event) {
+  event.preventDefault();
+});
+
+box2.addEventListener("drop", function(event) {
+  event.preventDefault();
+  const data = event.dataTransfer.getData("text/plain");
+  
+  if (data === "new text") {
+    alert("Start");
+  }
+
+
+  const box = document.querySelector('.box');
+const toggleButton = document.querySelector('#toggleButton');
+const infoBox = document.querySelector('#infoBox');
+
+let intervalId;
+let blinkInterval = prompt("Enter blinker interval in milliseconds:");
+
+toggleButton.addEventListener('dragstart', dragStart);
+toggleButton.addEventListener('dragend', dragEnd);
+
+toggleButton.addEventListener('click', toggleBlinker);
+document.addEventListener('keydown', toggleBlinker);
+
+function dragStart(event) {
+  event.dataTransfer.setData("text/plain", event.target.id);
+  event.target.style.opacity = "0.5";
+}
+
+function dragEnd(event) {
+  event.target.style.opacity = "1";
+}
+
+function toggleBlinker(event) {
+  if (event.type === 'keydown' && event.code !== 'Enter' && event.code !== 'Space') {
+    return;
+  }
+
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+    toggleButton.innerText = "Turn blinker on";
+    
+  } else {
+    intervalId = setInterval(() => {
+      box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }, blinkInterval);
+    toggleButton.innerText = "Turn blinker off";
+
+  }
+}
+
+});
+
+</script>
